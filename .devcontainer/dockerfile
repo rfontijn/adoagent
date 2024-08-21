@@ -1,0 +1,6 @@
+FROM mcr.microsoft.com/devcontainers/dotnet:latest
+RUN apt-get update \
+    && apt-get install -y powershell
+ENV PATH="/azp:$PATH"
+RUN apt-get update && \
+    apt-get install -y azure-cli
