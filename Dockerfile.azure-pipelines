@@ -35,11 +35,11 @@ RUN DEBIAN_FRONTEND=dpkg -i powershell_7.4.4-1.deb_amd64.deb
 # Resolve missing dependencies and finish the install (if necessary)
 RUN DEBIAN_FRONTEND=apt-get install -f
 
-# Delete the downloaded package file
-RUN DEBIAN_FRONTEND=rm powershell_7.4.4-1.deb_amd64.deb
+# # Delete the downloaded package file
+# RUN DEBIAN_FRONTEND=rm powershell_7.4.4-1.deb_amd64.deb
 
-# Install Azure Powershell
-RUN pwsh -Command "Install-Module -Name Az -Force -AllowClobber -Scope AllUsers"
+# # Install Azure Powershell
+# RUN pwsh -Command "Install-Module -Name Az -Force -AllowClobber -Scope AllUsers"
 
 
 # Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
