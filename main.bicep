@@ -27,13 +27,13 @@ var tags = {
 }
 @description('Tags to apply to the resources.')
 
-param imagename string = 'adoagent2:1.0'
+param imagename string = 'adoagent:1.0'
 @description('The name of the container image.')
-param managedenvname string = 'cnapps2'
+param managedenvname string = 'cnapps'
 @description('The name of the managed environment.')
 
 // Define App Service Job resource for ADO agent
-var adoagentjobName = 'adoagentjob2'
+var adoagentjobName = 'adoagentjob'
 
 // Define virtual network resource
 // var sharedServicesSubnet = {
@@ -186,7 +186,6 @@ resource cnapps 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: managedenvname
   location: location
   tags: tags
-
   properties: {
     appLogsConfiguration: {
       destination: 'azure-monitor'
@@ -195,7 +194,7 @@ resource cnapps 'Microsoft.App/managedEnvironments@2023-05-01' = {
       infrastructureSubnetId: containerAppsSubnet.id
       internal: true
     }
-    zoneRedundant: true
+    zoneRedundant: false
   }
 }
 
@@ -376,7 +375,8 @@ resource arcbuild 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     arguments: '${containerregistryName} ${imagename}'
     scriptContent: '''
     az login --identity
-    az acr build --registry $1 --image $2  --file Dockerfile.azure-pipelines https://github.com/PoojithJain/containerapps-selfhosted-agent.git
+    
+    az acr build --registry $1 --image $2  --file Dockerfile.ado https://github.com/PoojithJain/containerapps-selfhosted-agent.git
     '''
     cleanupPreference: 'OnSuccess'
   }
@@ -497,8 +497,8 @@ resource adoagentjob 'Microsoft.App/jobs@2023-05-01' = {
     template: {
       containers: [
         {
-          image: '${containerregistry.properties.loginServer}/adoagent2:1.0'
-          name: 'adoagent2'
+          image: '${containerregistry.properties.loginServer}/adoagent:1.0'
+          name: 'adoagent'
           env: [
             {
               name: 'AZP_TOKEN'
